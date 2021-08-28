@@ -1,0 +1,42 @@
+FROM composer:latest AS composer
+FROM php:7.4.0-fpm
+
+RUN apt-get update -y && apt-get install -y libwebp-dev libjpeg62-turbo-dev libpng-dev libxpm-dev
+
+RUN apt-get update && \
+    apt-get install -y \
+        zlib1g-dev 
+
+#RUN docker-php-ext-configure gd --with-gd --with-webp-dir --with-jpeg-dir \
+#    --with-png-dir --with-zlib-dir --with-xpm-dir --with-freetype-dir \
+#    --enable-gd-native-ttf
+
+RUN docker-php-ext-install pdo_mysql opcache mysqli gd \
+	&& pecl install xdebug-2.9.1 \
+	&& pecl install redis \ 
+    && docker-php-ext-enable xdebug mysqli redis gd
+
+
+#timezone
+ENV TZ=Europe/Moscow
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+#change user permissions
+ARG user_uid
+ARG user_gid
+RUN usermod -u $user_uid www-data
+RUN groupmod -g $user_gid www-data
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN composer --version
+RUN apt update && apt install -y git
+RUN apt-get install --yes zip unzip
+
+COPY ./entrypoints/php/custom-start.sh /usr/local/bin/custom-start.sh
+#COPY --from=composer /usr/bin/composer /usr/bin/composer
+RUN composer --version
+RUN chmod +x /usr/local/bin/custom-start.sh
+
+ENTRYPOINT ["custom-start.sh"]
+CMD ["php-fpm"]

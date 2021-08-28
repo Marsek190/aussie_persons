@@ -1,0 +1,63 @@
+version: "3.7"
+
+services:
+  mysql:
+    container_name: mysql
+    build:
+      context: ./bin
+      dockerfile: Dockerfile-mysql
+      args:
+        user_uid: "$user_uid"
+        user_gid: "$user_gid"
+    restart: 'always'
+    networks:
+      - custom_docker_network
+    ports:
+      - 3306:3306
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./logs/mysql:/var/log/mysql
+      - ./bin/config/mysql:/etc/mysql/conf.d 
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: "maindb"
+  php-fpm:
+    container_name: php-fpm
+    build:
+      context: ./bin
+      dockerfile: Dockerfile-php-fpm
+      args:
+        user_uid: "$user_uid"
+        user_gid: "$user_gid"
+    restart: 'always'
+    networks:
+      - custom_docker_network
+    volumes:
+      - ./app:/var/www/
+      - ./data/xdebug_profiler/:/var/xdebug_profiler/
+      - ./bin/config/php/php-fpm.ini:/usr/local/etc/php/conf.d/custom-php.ini
+      - ./logs/msmtp/:/var/log/msmtp/
+      - ./logs/php/:/var/log/php/
+      - ./bin/config/msmtp/.msmtp_php:/etc/.msmtp_php_original
+    environment:
+      XDEBUG_CONFIG: "remote_host=$REMOTE_HOST_IP"
+      PHP_IDE_CONFIG: "serverName=myapp"
+  nginx:
+    container_name: nginx
+    restart: 'always'
+    networks:
+      - custom_docker_network
+    build:
+      context: ./bin
+      dockerfile: Dockerfile-nginx
+    volumes:
+      - ./app:/var/www/
+      - ./bin/config/nginx_vhosts/:/etc/nginx/conf.d/
+      - ./logs/nginx/:/var/log/nginx/
+    ports:
+      - 80:80
+      - 443:443
+
+networks:
+  custom_docker_network:
+    name: app_network

@@ -1,0 +1,17 @@
+#!/bin/bash
+initial="$(pwd)"
+separator="$DEV_PATH/www"
+pathAfterSeparator="${initial//$separator/}"
+
+C=''
+for i in "$@"; do 
+    i="${i//\\/\\\\}"
+    C="$C \"${i//\"/\\\"}\""
+done
+
+if [ -z "$pathAfterSeparator" ] || [ "$initial" = "$pathAfterSeparator" ]
+then
+	docker exec -ti -w /var/www php-fpm su -s /bin/bash -c "php $C" www-data
+else
+	docker exec -ti -w /var/www$pathAfterSeparator php-fpm su -s /bin/bash -c "php $C" www-data
+fi

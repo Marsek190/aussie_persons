@@ -1,0 +1,8 @@
+.env
+data/*
+.idea
+logs/msmtp
+logs/mysql
+logs/nginx
+logs/php
+bin/config/msmtp
