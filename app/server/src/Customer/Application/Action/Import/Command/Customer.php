@@ -1,6 +1,6 @@
 <?php
 
-namespace App\CustomersImporter\Handler\Command;
+namespace Customer\Application\Action\Import\Command;
 
 class Customer
 {

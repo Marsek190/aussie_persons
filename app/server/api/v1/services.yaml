@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  Api\V1\Controller\CustomersController:
+    class: 'Api\V1\Controller\CustomersController'
+    tags: ['controller.service_arguments']

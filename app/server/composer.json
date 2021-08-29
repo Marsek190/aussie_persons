@@ -67,7 +67,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "Console\\": "console/"
+            "Api\\V1\\": "api/v1/"
         }
     },
     "autoload-dev": {

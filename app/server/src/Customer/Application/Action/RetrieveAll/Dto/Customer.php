@@ -1,6 +1,6 @@
 <?php
 
-namespace App\CustomersImporter\Handler\Dto;
+namespace Customer\Application\Action\Import\Dto\Customer;
 
 class Customer
 {
@@ -26,41 +26,26 @@ class Customer
         $this->country = $country;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getFirstName(): string
     {
         return $this->firstName;
     }
 
-    /**
-     * @return string
-     */
     public function getLastName(): string
     {
         return $this->lastName;
     }
 
-    /**
-     * @return string
-     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * @return string
-     */
     public function getCountry(): string
     {
         return $this->country;

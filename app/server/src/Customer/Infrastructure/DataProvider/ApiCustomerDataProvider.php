@@ -1,16 +1,18 @@
 <?php
 
-namespace App\CustomersImporter\DataProvider;
+namespace Customer\Infrastructure\DataProvider;
 
 use Exception;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\GuzzleException;
-use App\CustomersImporter\Handler\Command\Customer;
-use App\CustomersImporter\Handler\Dto\Customer as CustomerDto;
+use Customer\Application\Action\Import\Command\Customer as CustomerCommand;
+use Customer\Application\DataProvider\CustomerDataProvider;
+use Customer\Domain\ValueObject\Customer;
+use Customer\Domain\ValueObject\Name;
 
-class ApiCustomersDataProvider implements CustomersDataProvider
+class ApiCustomerDataProvider implements CustomerDataProvider
 {
     private ApiConf $apiConf;
     private ClientInterface $httpClient;
@@ -24,10 +26,10 @@ class ApiCustomersDataProvider implements CustomersDataProvider
     }
 
     /** @inheritDoc */
-    public function collect(Customer $customer): array
+    public function collect(CustomerCommand $command): array
     {
         try {
-            $request = new Request('GET', $this->getUrl($customer));
+            $request = new Request('GET', $this->getUrl($command));
             $response = $this->httpClient->send($request, [
                 'timeout' => $this->timeout,
             ]);
@@ -41,12 +43,16 @@ class ApiCustomersDataProvider implements CustomersDataProvider
 
             $customers = [];
             foreach ($results as $result) {
-                $customers[] = new CustomerDto(
+                $name = new Name(
+                    $result['name']['first'],
+                    $result['name']['last']
+                );
+
+                $customers[] = new Customer(
                     (int) $result['id'],
-                    $result[''],
-                    $result[''],
-                    $result[''],
-                    $result['']
+                    $name,
+                    $result['email'],
+                    $result['location']['country']
                 );
             }
 
@@ -58,11 +64,11 @@ class ApiCustomersDataProvider implements CustomersDataProvider
         }
     }
 
-    private function getUrl(Customer $customer): string
+    private function getUrl(CustomerCommand $command): string
     {
         $query = http_build_query([
             'nat' => 'au',
-            'results' => $customer->getQuantity(),
+            'results' => $command->getQuantity(),
         ]);
 
         return sprintf(

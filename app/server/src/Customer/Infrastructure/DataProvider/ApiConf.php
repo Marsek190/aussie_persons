@@ -1,6 +1,6 @@
 <?php
 
-namespace App\CustomersImporter\DataProvider;
+namespace Customer\Infrastructure\DataProvider;
 
 class ApiConf
 {
