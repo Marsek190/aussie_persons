@@ -1,0 +1,58 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Src\Customers\Ui\Normalizer\SerializerFactory: ~
+  GuzzleHttp\Client: ~
+
+  src.customers.ui.serializer:
+    class: 'Symfony\Component\Serializer\SerializerInterface'
+    factory: ['@Src\Customers\Ui\Normalizer\SerializerFactory', 'create']
+
+  Src\Customers\:
+    resource: './'
+    exclude: '**/{Command,Dto,Entity,Exception}'
+
+  Src\Customers\Infrastructure\DataProvider\ApiConf:
+    class: 'Src\Customers\Infrastructure\DataProvider\ApiConf'
+    bind:
+      $baseUrl: 'https://randomuser.me/api'
+
+  Src\Customers\Ui\Normalizer\Normalizer:
+    class: 'Src\Customers\Ui\Normalizer\Normalizer'
+    bind:
+      $serializer: '@src.customers.ui.serializer'
+    public: true
+
+  Src\Customers\Application\Action\Import\Handler:
+    class: 'Src\Customers\Application\Action\Import\Handler'
+    bind:
+      $customerDataProvider: '@Src\Customers\Infrastructure\DataProvider\ApiCustomerDataProvider'
+      $customerRepo: '@Src\Customers\Infrastructure\Repository\DbCustomerRepository'
+    public: true
+
+  Src\Customers\Application\Action\RetrieveAll\Handler:
+    class: 'Src\Customers\Application\Action\RetrieveAll\Handler'
+    bind:
+      $customerRepo: '@Src\Customers\Infrastructure\Repository\DbCustomerRepository'
+    public: true
+
+  Src\Customers\Application\Action\RetrieveById\Handler:
+    class: 'Src\Customers\Application\Action\RetrieveById\Handler'
+    bind:
+      $customerRepo: '@Src\Customers\Infrastructure\Repository\DbCustomerRepository'
+    public: true
+
+  Src\Customers\Infrastructure\Repository\DbCustomerRepository:
+    class: 'Src\Customers\Infrastructure\Repository\DbCustomerRepository'
+    bind:
+      $entityManager: '@doctrine.orm.entity_manager'
+      $batchSize: 20
+
+  Src\Customers\Infrastructure\DataProvider\ApiCustomerDataProvider:
+    class: 'Src\Customers\Infrastructure\DataProvider\ApiCustomerDataProvider'
+    bind:
+      $httpClient: '@GuzzleHttp\Client'
+      $timeout: 2

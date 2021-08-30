@@ -1,8 +1,0 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
-
-customers:
-  path: /v1/customers/
-  controller: Api\V1\Controller\CustomersController::customers
-  methods: GET
