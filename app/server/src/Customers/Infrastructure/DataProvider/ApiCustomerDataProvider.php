@@ -84,7 +84,7 @@ class ApiCustomerDataProvider implements CustomerDataProvider
     {
         $query = http_build_query([
             'nat' => 'au',
-            'results' => $command->getQuantity(),
+            'results' => $command->getLimit(),
         ]);
 
         return sprintf(

@@ -37,8 +37,12 @@ class CustomersImport extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            $limit = (int) $input->getArgument(self::CUSTOMERS_LIMIT_ARGUMENT);
-            $command = new CustomerCommand($limit);
+            $limit = $input->getArgument(self::CUSTOMERS_LIMIT_ARGUMENT);
+            if (!is_numeric($limit)) {
+                throw new Exception('Argument "limit" must be an integer.');
+            }
+
+            $command = new CustomerCommand((int) $limit);
             $added = $this->handler->handle($command);
             $output->writeln('Console command was success executed.');
             $output->writeln(sprintf('Added %s customers.', $added));
