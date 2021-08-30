@@ -14,7 +14,7 @@ class DbCustomerRepository implements CustomerRepository
 {
     private EntityManagerInterface $entityManager;
     private CustomerConverter $converter;
-    private EntityRepository $repo;
+    private EntityRepository $entityRepo;
     private int $batchSize;
 
     public function __construct(EntityManagerInterface $entityManager, CustomerConverter $converter, int $batchSize)
@@ -22,7 +22,7 @@ class DbCustomerRepository implements CustomerRepository
         $this->entityManager = $entityManager;
         $this->converter = $converter;
         $this->batchSize = $batchSize;
-        $this->repo = $this->entityManager->getRepository(CustomerEntity::class);
+        $this->entityRepo = $this->entityManager->getRepository(CustomerEntity::class);
     }
 
     /** @inheritDoc */
@@ -53,12 +53,22 @@ class DbCustomerRepository implements CustomerRepository
     /** @inheritDoc */
     public function findAll(): array
     {
-        return $this->repo->findAll();
+        /** @var CustomerEntity[] $entities */
+
+        $entities = $this->entityRepo->findAll();
+        $customers = [];
+        foreach ($entities as $entity) {
+            $customers[] = $this->converter->convertToValueObject($entity);
+        }
+
+        return $customers;
     }
 
     /** @inheritDoc */
     public function findById(int $id): Customer
     {
-        return $this->repo->find($id);
+        $entity = $this->entityRepo->find($id);
+
+        return $this->converter->convertToValueObject($entity);
     }
 }
