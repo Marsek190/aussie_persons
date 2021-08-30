@@ -13,6 +13,7 @@ class Customer
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     public int $id;
 

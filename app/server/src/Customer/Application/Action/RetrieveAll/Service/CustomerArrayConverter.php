@@ -2,7 +2,7 @@
 
 namespace Customer\Application\Action\RetrieveAll\Service;
 
-use Customer\Domain\ValueObject\Customer;
+use Customer\Application\DataProvider\Items\Customer;
 
 class CustomerArrayConverter
 {

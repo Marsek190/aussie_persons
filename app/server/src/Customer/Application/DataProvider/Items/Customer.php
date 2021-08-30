@@ -1,6 +1,6 @@
 <?php
 
-namespace Customer\Domain\ValueObject;
+namespace Customer\Application\DataProvider\Items;
 
 class Customer
 {

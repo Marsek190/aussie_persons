@@ -9,8 +9,8 @@ use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\GuzzleException;
 use Customer\Application\Action\Import\Command\Customer as CustomerCommand;
 use Customer\Application\DataProvider\CustomerDataProvider;
-use Customer\Domain\ValueObject\Customer;
-use Customer\Domain\ValueObject\Name;
+use Customer\Application\DataProvider\Items\Customer;
+use Customer\Application\DataProvider\Items\Name;
 
 class ApiCustomerDataProvider implements CustomerDataProvider
 {

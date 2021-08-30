@@ -2,7 +2,7 @@
 
 namespace Customer\Application\Repository;
 
-use Customer\Domain\ValueObject\Customer;
+use Customer\Application\DataProvider\Items\Customer;
 use Customer\Application\Exception\CustomerNotFoundException;
 
 interface CustomerRepository

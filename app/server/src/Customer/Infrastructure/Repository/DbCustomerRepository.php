@@ -5,7 +5,7 @@ namespace Customer\Infrastructure\Repository;
 use Exception;
 use Customer\Application\Exception\CustomerNotFoundException;
 use Doctrine\ORM\EntityRepository;
-use Customer\Domain\ValueObject\Customer;
+use Customer\Application\DataProvider\Items\Customer;
 use Doctrine\ORM\EntityManagerInterface;
 use Customer\Application\Repository\CustomerRepository;
 use Customer\Infrastructure\Repository\Converter\CustomerConverter;

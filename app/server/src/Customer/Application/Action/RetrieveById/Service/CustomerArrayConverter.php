@@ -2,7 +2,7 @@
 
 namespace Customer\Application\Action\RetrieveById\Service;
 
-use Customer\Domain\ValueObject\Customer;
+use Customer\Application\DataProvider\Items\Customer;
 
 class CustomerArrayConverter
 {
@@ -17,6 +17,8 @@ class CustomerArrayConverter
         return [
             'id' => $customer->id(),
             'full_name' => sprintf('%s %s', $name->first(), $name->last()),
+            'email' => $customer->email(),
+            'country' => $customer->country(),
         ];
     }
 }
