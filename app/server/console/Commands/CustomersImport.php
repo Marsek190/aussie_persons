@@ -13,6 +13,7 @@ use Src\Customers\Application\Action\Import\Handler as CustomersImportHandler;
 class CustomersImport extends Command
 {
     private const CUSTOMERS_LIMIT_ARGUMENT = 'limit';
+    protected static $defaultName = 'customers.import';
 
     private CustomersImportHandler $handler;
 
@@ -33,7 +34,7 @@ class CustomersImport extends Command
     }
 
     /** @inheritDoc */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
             $limit = (int) $input->getArgument(self::CUSTOMERS_LIMIT_ARGUMENT);
@@ -41,9 +42,13 @@ class CustomersImport extends Command
             $added = $this->handler->handle($command);
             $output->writeln('Console command was success executed.');
             $output->writeln(sprintf('Added %s customers.', $added));
+
+            return self::SUCCESS;
         } catch (Exception $e) {
             $output->writeln('Console command has failure.');
             $output->writeln(sprintf("Cause of fail: '%s'", $e->getMessage()));
+
+            return self::FAILURE;
         }
     }
 }

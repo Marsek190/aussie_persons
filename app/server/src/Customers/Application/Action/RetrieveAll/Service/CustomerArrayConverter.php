@@ -16,7 +16,9 @@ class CustomerArrayConverter
 
         return [
             'id' => $customer->getId(),
-            'full_name' => sprintf('%s %s', $name->getFirst(), $name->getLast()),
+            'fullName' => sprintf('%s %s', $name->getFirst(), $name->getLast()),
+            'email' => $customer->getEmail(),
+            'country' => $customer->getLocation()->getCountry(),
         ];
     }
 }

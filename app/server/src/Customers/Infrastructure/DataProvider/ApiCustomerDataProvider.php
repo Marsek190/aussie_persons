@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Src\Customers\Application\Action\Import\Command\Customer as CustomerCommand;
 use Src\Customers\Application\DataProvider\CustomerDataProvider;
 use Src\Customers\Application\Dto\Customer;
+use Src\Customers\Application\Dto\Location;
 use Src\Customers\Application\Dto\Name;
 
 class ApiCustomerDataProvider implements CustomerDataProvider
@@ -18,6 +19,11 @@ class ApiCustomerDataProvider implements CustomerDataProvider
     private ClientInterface $httpClient;
     private int $timeout;
 
+    /**
+     * @param ApiConf $apiConf
+     * @param ClientInterface $httpClient
+     * @param int $timeout
+     */
     public function __construct(ApiConf $apiConf, ClientInterface $httpClient, int $timeout)
     {
         $this->apiConf = $apiConf;
@@ -39,24 +45,34 @@ class ApiCustomerDataProvider implements CustomerDataProvider
                 return [];
             }
 
+            /** @var array $results */
             $results = $data['results'];
 
             $customers = [];
+            /** @var array $result */
             foreach ($results as $result) {
+                $id = (int) $result['id']['value'];
                 $name = new Name(
                     $result['name']['first'],
                     $result['name']['last']
                 );
-
-                $customers[] = new Customer(
-                    (int) $result['id'],
-                    $name,
-                    $result['email'],
+                $location = new Location(
+                    $result['location']['city'],
                     $result['location']['country']
+                );
+
+                $customers[$id] = new Customer(
+                    $id,
+                    $name,
+                    $location,
+                    $result['email'],
+                    $result['username'],
+                    $result['gender'],
+                    $result['phone']
                 );
             }
 
-            return $customers;
+            return array_values($customers);
         } catch (BadResponseException $e) {
             throw new Exception($e->getResponse()->getBody()->getContents());
         } catch (Exception | GuzzleException $e) {

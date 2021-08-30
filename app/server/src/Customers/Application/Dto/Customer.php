@@ -6,21 +6,37 @@ class Customer
 {
     private int $id;
     private Name $name;
+    private Location $location;
     private string $email;
-    private string $country;
+    private string $username;
+    private string $gender;
+    private string $phone;
 
     /**
      * @param int $id
      * @param Name $name
+     * @param Location $location
      * @param string $email
-     * @param string $country
+     * @param string $username
+     * @param string $gender
+     * @param string $phone
      */
-    public function __construct(int $id, Name $name, string $email, string $country)
-    {
+    public function __construct(
+        int $id,
+        Name $name,
+        Location $location,
+        string $email,
+        string $username,
+        string $gender,
+        string $phone
+    ) {
         $this->id = $id;
         $this->name = $name;
+        $this->location = $location;
         $this->email = $email;
-        $this->country = $country;
+        $this->username = $username;
+        $this->gender = $gender;
+        $this->phone = $phone;
     }
 
     public function getId(): int
@@ -33,13 +49,28 @@ class Customer
         return $this->name;
     }
 
+    public function getLocation(): Location
+    {
+        return $this->location;
+    }
+
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    public function getCountry(): string
+    public function getUsername(): string
     {
-        return $this->country;
+        return $this->username;
+    }
+
+    public function getGender(): string
+    {
+        return $this->gender;
+    }
+
+    public function getPhone(): string
+    {
+        return $this->phone;
     }
 }

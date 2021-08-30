@@ -3,6 +3,7 @@
 namespace Src\Customers\Infrastructure\Repository\Converter;
 
 use Src\Customers\Application\Dto\Customer;
+use Src\Customers\Application\Dto\Location;
 use Src\Customers\Application\Dto\Name;
 use Src\Customers\Infrastructure\Hydrator\Hydrator;
 use Src\Customers\Infrastructure\Repository\Entity\Customer as CustomerEntity;
@@ -28,7 +29,11 @@ class CustomerConverter
             'firstName' => $customer->getName()->getFirst(),
             'lastName' => $customer->getName()->getLast(),
             'email' => $customer->getEmail(),
-            'country' => $customer->getCountry(),
+            'city' => $customer->getLocation()->getCity(),
+            'country' => $customer->getLocation()->getCountry(),
+            'phone' => $customer->getPhone(),
+            'username' => $customer->getUsername(),
+            'gender' => $customer->getGender(),
         ]);
 
         return $entity;
@@ -41,12 +46,16 @@ class CustomerConverter
     public function convertToDto(CustomerEntity $entity): Customer
     {
         $name = new Name($entity->firstName, $entity->lastName);
+        $location = new Location($entity->city, $entity->country);
 
         return new Customer(
             $entity->id,
             $name,
+            $location,
             $entity->email,
-            $entity->country
+            $entity->username,
+            $entity->phone,
+            $entity->gender
         );
     }
 }

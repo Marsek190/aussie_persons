@@ -1,3 +1,4 @@
 imports:
   - {resource: '../src/Customers/services.yaml'}
   - {resource: '../api/v1/services.yaml'}
+  - {resource: '../console/Commands/services.yaml'}

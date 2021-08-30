@@ -13,12 +13,17 @@ class CustomerArrayConverter
     public function convert(Customer $customer): array
     {
         $name = $customer->getName();
+        $location = $customer->getLocation();
 
         return [
             'id' => $customer->getId(),
-            'full_name' => sprintf('%s %s', $name->getFirst(), $name->getLast()),
+            'fullName' => sprintf('%s %s', $name->getFirst(), $name->getLast()),
             'email' => $customer->getEmail(),
-            'country' => $customer->getCountry(),
+            'country' => $location->getCountry(),
+            'username' => $customer->getUsername(),
+            'gender' => $customer->getGender(),
+            'city' => $location->getCity(),
+            'phone' => $customer->getPhone(),
         ];
     }
 }

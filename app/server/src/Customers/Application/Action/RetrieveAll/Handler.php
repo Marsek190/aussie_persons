@@ -10,6 +10,10 @@ class Handler
     private CustomerRepository $customerRepo;
     private CustomerArrayConverter $converter;
 
+    /**
+     * @param CustomerRepository $customerRepo
+     * @param CustomerArrayConverter $converter
+     */
     public function __construct(CustomerRepository $customerRepo, CustomerArrayConverter $converter)
     {
         $this->customerRepo = $customerRepo;

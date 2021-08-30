@@ -18,22 +18,42 @@ class Customer
     public int $id;
 
     /**
-     * @ORM\Column(name="first_name", type="string")
+     * @ORM\Column(name="first_name", type="string", length=30)
      */
     public string $firstName;
 
     /**
-     * @ORM\Column(name="last_name", type="string")
+     * @ORM\Column(name="last_name", type="string", length=30)
      */
     public string $lastName;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=20)
+     */
+    public string $city;
+
+    /**
+     * @ORM\Column(type="string", length=15)
      */
     public string $country;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=50)
      */
     public string $email;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    public string $phone;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    public string $username;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    public string $gender;
 }

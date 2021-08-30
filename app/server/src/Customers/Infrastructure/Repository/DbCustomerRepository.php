@@ -18,6 +18,11 @@ class DbCustomerRepository implements CustomerRepository
     private EntityRepository $entityRepo;
     private int $batchSize;
 
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param CustomerConverter $converter
+     * @param int $batchSize
+     */
     public function __construct(EntityManagerInterface $entityManager, CustomerConverter $converter, int $batchSize)
     {
         $this->entityManager = $entityManager;
@@ -43,7 +48,7 @@ class DbCustomerRepository implements CustomerRepository
                 }
 
                 $entity = $this->converter->convertToEntity($customer);
-                $this->entityManager->persist($entity);
+                $this->entityManager->merge($entity);
                 $batchOffset++;
             }
 
@@ -52,6 +57,7 @@ class DbCustomerRepository implements CustomerRepository
             $this->entityManager->commit();
         } catch (Exception $e) {
             $this->entityManager->rollback();
+            throw $e;
         }
     }
 

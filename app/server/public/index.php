@@ -1,6 +1,6 @@
 <?php
 
-use App\Kernel;
+use Src\Kernel;
 
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 
