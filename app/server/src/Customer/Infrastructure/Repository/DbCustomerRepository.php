@@ -3,6 +3,7 @@
 namespace Customer\Infrastructure\Repository;
 
 use Exception;
+use Customer\Application\Exception\CustomerNotFoundException;
 use Doctrine\ORM\EntityRepository;
 use Customer\Domain\ValueObject\Customer;
 use Doctrine\ORM\EntityManagerInterface;
@@ -68,6 +69,9 @@ class DbCustomerRepository implements CustomerRepository
     public function findById(int $id): Customer
     {
         $entity = $this->entityRepo->find($id);
+        if ($entity === null) {
+            throw new CustomerNotFoundException();
+        }
 
         return $this->converter->convertToValueObject($entity);
     }

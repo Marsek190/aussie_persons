@@ -2,6 +2,7 @@
 
 namespace Customer\Application\Action\RetrieveById;
 
+use Customer\Application\Exception\CustomerNotFoundException;
 use Customer\Application\Repository\CustomerRepository;
 use Customer\Application\Action\RetrieveById\Service\CustomerArrayConverter;
 use Customer\Application\Action\RetrieveById\Command\Customer as CustomerCommand;
@@ -20,6 +21,7 @@ class Handler
     /**
      * @param CustomerCommand $command
      * @return array
+     * @throws CustomerNotFoundException
      */
     public function handle(CustomerCommand $command): array
     {
