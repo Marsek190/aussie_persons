@@ -38,7 +38,7 @@ class CustomerConverter
      * @param CustomerEntity $entity
      * @return Customer
      */
-    public function convertToValueObject(CustomerEntity $entity): Customer
+    public function convertToDto(CustomerEntity $entity): Customer
     {
         $name = new Name($entity->firstName, $entity->lastName);
 

@@ -63,7 +63,7 @@ class DbCustomerRepository implements CustomerRepository
         $entities = $this->entityRepo->findAll();
         $customers = [];
         foreach ($entities as $entity) {
-            $customers[] = $this->converter->convertToValueObject($entity);
+            $customers[] = $this->converter->convertToDto($entity);
         }
 
         return $customers;
@@ -77,6 +77,6 @@ class DbCustomerRepository implements CustomerRepository
             throw new CustomerNotFoundException();
         }
 
-        return $this->converter->convertToValueObject($entity);
+        return $this->converter->convertToDto($entity);
     }
 }
