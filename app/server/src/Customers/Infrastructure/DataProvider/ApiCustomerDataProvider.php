@@ -66,7 +66,7 @@ class ApiCustomerDataProvider implements CustomerDataProvider
                     $name,
                     $location,
                     $result['email'],
-                    $result['username'],
+                    $result['login']['username'],
                     $result['gender'],
                     $result['phone']
                 );

@@ -28,7 +28,7 @@ class Customer
     public string $lastName;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=50)
      */
     public string $city;
 
