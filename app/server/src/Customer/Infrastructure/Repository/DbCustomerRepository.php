@@ -29,6 +29,10 @@ class DbCustomerRepository implements CustomerRepository
     /** @inheritDoc */
     public function save(array $customers): void
     {
+        if (empty($customers)) {
+            return;
+        }
+
         $this->entityManager->beginTransaction();
         try {
             $batchOffset = 0;
