@@ -15,6 +15,9 @@ services:
     resource: './'
     exclude: '**/{Command,Dto,Entity,Exception}'
 
+  Src\Customers\Ui\Factory\ResponseFactory:
+    class: 'Src\Customers\Ui\Factory\ResponseFactory'
+
   Src\Customers\Infrastructure\DataProvider\ApiConf:
     class: 'Src\Customers\Infrastructure\DataProvider\ApiConf'
     bind:
