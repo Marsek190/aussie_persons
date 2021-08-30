@@ -17,6 +17,7 @@ services:
 
   Src\Customers\Ui\Factory\ResponseFactory:
     class: 'Src\Customers\Ui\Factory\ResponseFactory'
+    public: true
 
   Src\Customers\Infrastructure\DataProvider\ApiConf:
     class: 'Src\Customers\Infrastructure\DataProvider\ApiConf'
