@@ -6,3 +6,18 @@ services:
   Api\V1\Controller\CustomersController:
     class: 'Api\V1\Controller\CustomersController'
     tags: ['controller.service_arguments']
+
+  Api\V1\Validator\ApiTokenValidator:
+    class: 'Api\V1\Validator\ApiTokenValidator'
+    bind:
+      $apiToken: '%env(resolve:API_TOKEN)%'
+
+  Api\V1\Listener\ExceptionSubscriber:
+    class: 'Api\V1\Listener\ExceptionSubscriber'
+    tags:
+      - { name: kernel.event_listener, event: kernel.exception }
+
+  Api\V1\Listener\ApiTokenSubscriber:
+    class: 'Api\V1\Listener\ApiTokenSubscriber'
+    tags:
+      - { name: kernel.event_listener, event: kernel.request }
