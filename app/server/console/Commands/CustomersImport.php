@@ -38,7 +38,7 @@ class CustomersImport extends Command
     {
         try {
             $limit = $input->getArgument(self::CUSTOMERS_LIMIT_ARGUMENT);
-            if (!is_int($limit)) {
+            if (!is_numeric($limit)) {
                 throw new Exception('Argument "limit" must be an integer.');
             }
 
