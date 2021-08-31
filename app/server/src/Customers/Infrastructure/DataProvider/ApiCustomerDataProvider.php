@@ -52,6 +52,10 @@ class ApiCustomerDataProvider implements CustomerDataProvider
             /** @var array $result */
             foreach ($results as $result) {
                 $id = (int) $result['id']['value'];
+                if (isset($customers[$id])) {
+                    continue;
+                }
+
                 $name = new Name(
                     $result['name']['first'],
                     $result['name']['last']
