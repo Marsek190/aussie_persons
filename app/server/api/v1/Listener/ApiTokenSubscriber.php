@@ -24,6 +24,10 @@ class ApiTokenSubscriber implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
+        if (!str_contains('/api/v1/', $request->getUri())) {
+            return;
+        }
+
         if (!$this->tokenValidator->validate($request)) {
             throw new InvalidTokenException();
         }
