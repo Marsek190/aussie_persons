@@ -20,7 +20,7 @@
 14. Execute migrations: `php bin/console doctrine:migrations:migrate`
 
 #Console task (getting customers):
-1. Run bash command: `php bin/console customers.import --limit=100`
+1. Run bash command: `php bin/console customers.import 100`
 
 #Routes:
 1. `/api/v1/customers/`
