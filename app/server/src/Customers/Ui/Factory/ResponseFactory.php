@@ -16,11 +16,11 @@ class ResponseFactory
      */
     public function createJson(bool $success, ?string $error, ?array $data, int $status): JsonResponse
     {
-        $response = new JsonResponse(json_encode([
+        $response = new JsonResponse([
             'success' => $success,
             'error' => $error,
             'data' => $data,
-        ]), $status);
+        ], $status);
 
         $response->setEncodingOptions(JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
