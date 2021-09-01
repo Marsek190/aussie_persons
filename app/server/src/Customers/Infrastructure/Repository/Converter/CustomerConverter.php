@@ -66,7 +66,6 @@ class CustomerConverter
      */
     public function convertToNewEntityState(CustomerEntity $entity, Customer $customer): CustomerEntity
     {
-        $entity->id = $customer->getId();
         $entity->firstName = $customer->getName()->getFirst();
         $entity->lastName = $customer->getName()->getLast();
         $entity->email = $customer->getEmail();

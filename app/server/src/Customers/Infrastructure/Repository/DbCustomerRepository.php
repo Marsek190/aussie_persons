@@ -97,19 +97,25 @@ class DbCustomerRepository implements CustomerRepository
         /** @var int $customerId */
         /** @var CustomerEntity[] $entities */
 
-        $emailsDict = array_map(
-            fn (Customer $customer) => [$customer->getEmail() => $customer->getId()],
-            $customers
+        $emailsDict = array_reduce(
+            $customers,
+            function (array $result, Customer $customer) {
+                $result[$customer->getEmail()] = $customer->getId();
+                return $result;
+            },
+            []
         );
 
         $entities = [];
         foreach ($this->entityRepo->findAll() as $entity) {
+            // remove array item so throws no DBAL-exception
             if (isset($customers[$entity->id])) {
                 unset($customers[$entity->id]);
             }
 
             if (isset($emailsDict[$entity->email])) {
                 $customerId = $emailsDict[$entity->email];
+                // update record state
                 $entities[] = $this->converter->convertToNewEntityState($entity, $customers[$customerId]);
                 unset($customers[$customerId]);
             }
