@@ -58,4 +58,24 @@ class CustomerConverter
             $entity->gender
         );
     }
+
+    /**
+     * @param CustomerEntity $entity
+     * @param Customer $customer
+     * @return CustomerEntity
+     */
+    public function convertToExistsEntity(CustomerEntity $entity, Customer $customer): CustomerEntity
+    {
+        $entity->id = $customer->getId();
+        $entity->firstName = $customer->getName()->getFirst();
+        $entity->lastName = $customer->getName()->getLast();
+        $entity->email = $customer->getEmail();
+        $entity->gender = $customer->getGender();
+        $entity->phone = $customer->getPhone();
+        $entity->username = $customer->getUsername();
+        $entity->city = $customer->getLocation()->getCity();
+        $entity->country = $customer->getLocation()->getCountry();
+
+        return $entity;
+    }
 }

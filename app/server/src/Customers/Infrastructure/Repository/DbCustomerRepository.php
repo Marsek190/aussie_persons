@@ -40,14 +40,39 @@ class DbCustomerRepository implements CustomerRepository
 
         $this->entityManager->beginTransaction();
         try {
-            $batchOffset = 0;
+            /** @var CustomerEntity $entity */
+            /** @var int $customerId */
+            /** @var CustomerEntity[] $entities */
+
+            $emailsDict = array_map(
+                fn (Customer $customer) => [$customer->getEmail() => $customer->getId()],
+                $customers
+            );
+
+            $entities = [];
+            foreach ($this->entityRepo->findAll() as $entity) {
+                if (isset($customers[$entity->id])) {
+                    unset($customers[$entity->id]);
+                }
+
+                if (isset($emailsDict[$entity->email])) {
+                    $customerId = $emailsDict[$entity->email];
+                    $entities[] = $this->converter->convertToExistsEntity($entity, $customers[$customerId]);
+                    unset($customers[$customerId]);
+                }
+            }
+
             foreach ($customers as $customer) {
+                $entities[] = $this->converter->convertToEntity($customer);
+            }
+
+            $batchOffset = 0;
+            foreach ($entities as $entity) {
                 if ($batchOffset % $this->batchSize === 0) {
                     $this->entityManager->flush();
                     $this->entityManager->clear();
                 }
 
-                $entity = $this->converter->convertToEntity($customer);
                 $this->entityManager->merge($entity);
                 $batchOffset++;
             }

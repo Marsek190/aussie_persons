@@ -76,7 +76,7 @@ class ApiCustomerDataProvider implements CustomerDataProvider
                 );
             }
 
-            return array_values($customers);
+            return $customers;
         } catch (BadResponseException $e) {
             throw new Exception($e->getResponse()->getBody()->getContents());
         } catch (Exception | GuzzleException $e) {
