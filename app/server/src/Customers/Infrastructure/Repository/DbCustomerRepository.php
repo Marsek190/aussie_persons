@@ -110,7 +110,7 @@ class DbCustomerRepository implements CustomerRepository
 
             if (isset($emailsDict[$entity->email])) {
                 $customerId = $emailsDict[$entity->email];
-                $entities[] = $this->converter->convertToExistsEntity($entity, $customers[$customerId]);
+                $entities[] = $this->converter->convertToNewEntityState($entity, $customers[$customerId]);
                 unset($customers[$customerId]);
             }
         }

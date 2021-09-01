@@ -64,7 +64,7 @@ class CustomerConverter
      * @param Customer $customer
      * @return CustomerEntity
      */
-    public function convertToExistsEntity(CustomerEntity $entity, Customer $customer): CustomerEntity
+    public function convertToNewEntityState(CustomerEntity $entity, Customer $customer): CustomerEntity
     {
         $entity->id = $customer->getId();
         $entity->firstName = $customer->getName()->getFirst();
