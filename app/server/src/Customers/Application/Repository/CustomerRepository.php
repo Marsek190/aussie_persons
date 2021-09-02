@@ -5,6 +5,7 @@ namespace Src\Customers\Application\Repository;
 use Exception;
 use Src\Customers\Application\Dto\Customer;
 use Src\Customers\Application\Exception\CustomerNotFoundException;
+use Src\Customers\Infrastructure\Repository\Entity\Customer as CustomerEntity;
 
 interface CustomerRepository
 {

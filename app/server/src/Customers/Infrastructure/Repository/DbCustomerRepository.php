@@ -88,41 +88,33 @@ class DbCustomerRepository implements CustomerRepository
     }
 
     /**
-     * @param string[] $emails
-     * @return CustomerEntity[]
-     */
-    public function findByEmails(array $emails): array
-    {
-        return $this->entityRepo->findBy(['email' => $emails]);
-    }
-
-    /**
      * @param Customer[] $customers
      * @return CustomerEntity[]
      */
     private function getEntitiesForPersists(array $customers): array
     {
-        /** @var CustomerEntity $entity */
         /** @var int $customerOffset */
+        /** @var CustomerEntity[] $result */
         /** @var CustomerEntity[] $entities */
 
         $emails = array_flip(
             array_map(fn (Customer $customer) => $customer->getEmail(), $customers)
         );
+        $entities = $this->entityRepo->findBy(['email' => $emails]);
 
-        $entities = [];
-        foreach ($this->findByEmails($emails) as $entity) {
+        $result = [];
+        foreach ($entities as $entity) {
             if (isset($emails[$entity->email])) {
                 $customerOffset = $emails[$entity->email];
-                $entities[] = $this->converter->convertToNewEntityState($entity, $customers[$customerOffset]);
+                $result[] = $this->converter->convertToNewEntityState($entity, $customers[$customerOffset]);
                 unset($customers[$customerOffset]);
             }
         }
 
         foreach ($customers as $customer) {
-            $entities[] = $this->converter->convertToEntity($customer);
+            $result[] = $this->converter->convertToEntity($customer);
         }
 
-        return $entities;
+        return $result;
     }
 }
