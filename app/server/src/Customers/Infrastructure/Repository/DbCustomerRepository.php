@@ -88,36 +88,34 @@ class DbCustomerRepository implements CustomerRepository
     }
 
     /**
+     * @param string[] $emails
+     * @return CustomerEntity[]
+     */
+    public function findByEmails(array $emails): array
+    {
+        return $this->entityRepo->findBy(['email' => $emails]);
+    }
+
+    /**
      * @param Customer[] $customers
      * @return CustomerEntity[]
      */
     private function getEntitiesForPersists(array $customers): array
     {
         /** @var CustomerEntity $entity */
-        /** @var int $customerId */
+        /** @var int $customerOffset */
         /** @var CustomerEntity[] $entities */
 
-        $emailsDict = array_reduce(
-            $customers,
-            function (array $result, Customer $customer) {
-                $result[$customer->getEmail()] = $customer->getId();
-                return $result;
-            },
-            []
+        $emails = array_flip(
+            array_map(fn (Customer $customer) => $customer->getEmail(), $customers)
         );
 
         $entities = [];
-        foreach ($this->entityRepo->findAll() as $entity) {
-            // remove array item so throws no DBAL-exception
-            if (isset($customers[$entity->id])) {
-                unset($customers[$entity->id]);
-            }
-
-            if (isset($emailsDict[$entity->email])) {
-                $customerId = $emailsDict[$entity->email];
-                // update record state
-                $entities[] = $this->converter->convertToNewEntityState($entity, $customers[$customerId]);
-                unset($customers[$customerId]);
+        foreach ($this->findByEmails($emails) as $entity) {
+            if (isset($emails[$entity->email])) {
+                $customerOffset = $emails[$entity->email];
+                $entities[] = $this->converter->convertToNewEntityState($entity, $customers[$customerOffset]);
+                unset($customers[$customerOffset]);
             }
         }
 

@@ -25,7 +25,6 @@ class CustomerConverter
     {
         /** @var CustomerEntity $entity */
         $entity = $this->hydrator->hydrate(CustomerEntity::class, [
-            'id' => $customer->getId(),
             'firstName' => $customer->getName()->getFirst(),
             'lastName' => $customer->getName()->getLast(),
             'email' => $customer->getEmail(),
@@ -49,7 +48,6 @@ class CustomerConverter
         $location = new Location($entity->city, $entity->country);
 
         return new Customer(
-            $entity->id,
             $name,
             $location,
             $entity->email,

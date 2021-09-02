@@ -6,14 +6,19 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="customer")
+ * @ORM\Table(
+ *     name="customer",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="search_idx", columns={"email"})
+ *     }
+ * )
  */
 class Customer
 {
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     public int $id;
 

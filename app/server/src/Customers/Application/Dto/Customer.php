@@ -4,7 +4,6 @@ namespace Src\Customers\Application\Dto;
 
 class Customer
 {
-    private int $id;
     private Name $name;
     private Location $location;
     private string $email;
@@ -13,7 +12,6 @@ class Customer
     private string $phone;
 
     /**
-     * @param int $id
      * @param Name $name
      * @param Location $location
      * @param string $email
@@ -22,7 +20,6 @@ class Customer
      * @param string $phone
      */
     public function __construct(
-        int $id,
         Name $name,
         Location $location,
         string $email,
@@ -30,18 +27,12 @@ class Customer
         string $gender,
         string $phone
     ) {
-        $this->id = $id;
         $this->name = $name;
         $this->location = $location;
         $this->email = $email;
         $this->username = $username;
         $this->gender = $gender;
         $this->phone = $phone;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getName(): Name

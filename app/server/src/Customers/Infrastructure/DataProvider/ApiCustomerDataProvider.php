@@ -51,8 +51,8 @@ class ApiCustomerDataProvider implements CustomerDataProvider
             $customers = [];
             /** @var array $result */
             foreach ($results as $result) {
-                $id = (int) $result['id']['value'];
-                if (isset($customers[$id])) {
+                $email = $result['email'];
+                if (isset($customers[$email])) {
                     continue;
                 }
 
@@ -64,19 +64,19 @@ class ApiCustomerDataProvider implements CustomerDataProvider
                     $result['location']['city'],
                     $result['location']['country']
                 );
-
-                $customers[$id] = new Customer(
-                    $id,
+                $customer = new Customer(
                     $name,
                     $location,
-                    $result['email'],
+                    $email,
                     $result['login']['username'],
                     $result['gender'],
                     $result['phone']
                 );
+
+                $customers[$email] = $customer;
             }
 
-            return $customers;
+            return array_values($customers);
         } catch (BadResponseException $e) {
             throw new Exception($e->getResponse()->getBody()->getContents());
         } catch (Exception | GuzzleException $e) {
